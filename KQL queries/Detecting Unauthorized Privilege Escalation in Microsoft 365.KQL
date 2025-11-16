@@ -1,0 +1,20 @@
+
+AuditLogs
+| where OperationName in ("Add member to role", "Remove member from role", "Add role to user", "Change user role", "Assign role to user")
+| extend InitiatedByJson = parse_json(InitiatedBy),
+         TargetJson = parse_json(TargetResources)
+| mv-expand TargetJson
+| extend Initiator = tostring(InitiatedByJson.user.userPrincipalName),
+         InitiatorIP = tostring(InitiatedByJson.user.ipAddress),
+         TargetUser = tostring(TargetJson.userPrincipalName),
+         RoleName = tostring(TargetJson.modifiedProperties[0])
+| project TimeGenerated,
+          OperationName,
+          RoleName,
+          Initiator,
+          InitiatorIP,
+          TargetUser,
+          Result,
+          ResultDescription,
+          TargetResources
+| order by TimeGenerated desc
