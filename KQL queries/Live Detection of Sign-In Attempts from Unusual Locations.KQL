@@ -1,0 +1,8 @@
+// Proactive M365 Threat Detection : Live Detection of Sign-In Attempts from Unusual Locations
+// Get list of all connections (success, Failed, revoked...etc) outside of of Canada (CA) and the United States (US) 
+
+SigninLogs 
+| where Location !in ("CA", "US") and isnotempty(Location) // Location different from CANADA, US 
+| extend LocalTime = datetime_add('hour', -5, TimeGenerated) // UTC-5 (CANADA Time) 
+| project LocalTime, UserPrincipalName, UserDisplayName , Identity, ResourceDisplayName , Location , IPAddress, RiskState, ConditionalAccessStatus, ResultType, ResultSignature, ResultDescription, MfaDetail, RiskDetail
+| order by LocalTime desc
