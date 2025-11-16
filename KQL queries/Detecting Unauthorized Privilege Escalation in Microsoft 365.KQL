@@ -1,3 +1,10 @@
+/*
+In modern cloud environments, identity is the new security perimeter. 
+As organizations increasingly rely on Microsoft 365 for identity, collaboration, and administration, monitoring privileged access becomes a critical component of any security strategy. 
+Unauthorized privilege escalation, whether caused by compromised accounts, insider threats, or configuration abuse, can lead to catastrophic consequences such as data exfiltration, persistence, or widespread compromise.
+This KQL query designed to detect role assignments and privilege changes in Microsoft 365, and how integrating this detection into Azure Alerts strengthens the overall security posture. A refined version of the query is also provided.
+*/
+
 
 AuditLogs
 | where OperationName in ("Add member to role", "Remove member from role", "Add role to user", "Change user role", "Assign role to user")
