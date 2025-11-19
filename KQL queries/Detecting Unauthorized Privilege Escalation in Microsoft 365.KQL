@@ -6,7 +6,7 @@
 
 AuditLogs
 | where OperationName in~ ("Add eligible member to role", 
-    "Add eligible member to role in PIM completed (permanent)")  // optional : you can add local password update : "Update device local administrator password" 
+    "Add eligible member to role in PIM completed (permanent)")
 | extend
     InitiatedByJson = parse_json(InitiatedBy),
     TargetJson = parse_json(TargetResources)
@@ -15,7 +15,7 @@ AuditLogs
     Initiator = tostring(InitiatedByJson.user.userPrincipalName),
     InitiatorIP = tostring(InitiatedByJson.user.ipAddress),
     TargetUser = tostring(TargetJson.userPrincipalName),
-    RoleName = tostring(TargetJson.modifiedProperties[0])
+    RoleName = tostring(TargetJson.displayName)
 | project
     TimeGenerated,
     OperationName,
