@@ -5,7 +5,10 @@
 
 
 AuditLogs
-| where OperationName in~ ("Add eligible member to role", 
+| where OperationName in~ ("Add member to role", 
+    "Add eligible member to role", 
+    "Add member to role in PIM requested (permanent)",
+    "Add member to role in PIM completed (permanent)",
     "Add eligible member to role in PIM completed (permanent)")
 | extend
     InitiatedByJson = parse_json(InitiatedBy),
