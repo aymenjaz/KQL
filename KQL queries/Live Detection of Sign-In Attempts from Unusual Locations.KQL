@@ -4,5 +4,18 @@
 SigninLogs 
 | where Location !in ("CA", "US") and isnotempty(Location) // Location different from CANADA, US 
 | extend LocalTime = datetime_add('hour', -5, TimeGenerated) // UTC-5 (CANADA Time) 
-| project LocalTime, UserPrincipalName, UserDisplayName , Identity, ResourceDisplayName , Location , IPAddress, RiskState, ConditionalAccessStatus, ResultType, ResultSignature, ResultDescription, MfaDetail, RiskDetail
+| project LocalTime, 
+      UserPrincipalName, 
+      UserDisplayName , 
+      Identity, 
+      ResourceDisplayName , 
+      Location , 
+      IPAddress, 
+      RiskState, 
+      ConditionalAccessStatus, 
+      ResultType, 
+      ResultSignature, 
+      ResultDescription, 
+      MfaDetail, 
+      RiskDetail
 | order by LocalTime desc
