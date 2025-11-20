@@ -5,7 +5,8 @@
 
 
 AuditLogs
-| where OperationName in~ ("Add member to role", 
+| where OperationName in~ (
+    "Add member to role", 
     "Add eligible member to role", 
     "Add member to role in PIM requested (permanent)",
     "Add member to role in PIM completed (permanent)",
@@ -16,18 +17,23 @@ AuditLogs
 | mv-expand TargetJson
 | extend
     Initiator = tostring(InitiatedByJson.user.userPrincipalName),
+    InitiatorUPN = tostring(InitiatedByJson.user.userPrincipalName),
+    InitiatorId = tostring(InitiatedByJson.user.id),
     InitiatorIP = tostring(InitiatedByJson.user.ipAddress),
     TargetUser = tostring(TargetJson.userPrincipalName),
-    RoleName = tostring(TargetJson.displayName)
+    RoleName = tostring(TargetJson.displayName),
+    AppId = tostring(InitiatedByJson.app.appId)
 | project
-    TimeGenerated,
-    OperationName,
-    RoleName,
-    TargetJson.displayName,
-    Initiator,
-    InitiatorIP,
+    TimeGenerated, 
+    ActivityDisplayName, 
+    Category, 
+    OperationName, 
+    Initiator, 
+    InitiatorUPN, 
+    InitiatorId, 
+    InitiatorIP, 
     TargetUser,
-    Result,
-    ResultDescription,
-    TargetResources
+    AppId, 
+    Result, 
+    ResultReason
 | order by TimeGenerated desc
